@@ -2,13 +2,20 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="site.metacoding.red.domain.boards.Boards">
+<mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
 	
 	<insert id="insert">
 		INSERT INTO boards(id, title, content, usersId, createdAt) 
 		VALUES(boards_seq.nextval, #{title}, #{content}, #{usersId}, sysdate)
 	</insert>
 
+	<select id="findByIdList" resultType="site.metacoding.red.web.dto.request.boards.FindRespDto">
+		SELECT b.id, b.title, b.content, u.username, b.createdat
+		from boards b
+		inner join users u on b.usersId = u.id 
+		where u.id =  #{id}
+	</select>
+	
 	<select id="findById" resultType="site.metacoding.red.domain.boards.Boards">
 		SELECT * FROM boards WHERE id = #{id}
 	</select>
@@ -25,7 +32,7 @@
 		UPDATE boards 
 		SET title = #{title}, 
 		content = #{content}
-		WHERE id = #{id}
+		WHERE id = #{usersId}
 	</update>
 
 </mapper>
