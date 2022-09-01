@@ -14,6 +14,5 @@ public interface UsersDao {
 	public void delete(Integer id);
 	public void update(Users users);
 	
-
 	
 }
