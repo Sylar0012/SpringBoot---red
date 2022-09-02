@@ -9,6 +9,14 @@
 		VALUES(boards_seq.nextval, #{title}, #{content}, #{usersId}, sysdate)
 	</insert>
 
+	<select id="findByIdtoDetail" resultType="site.metacoding.red.domain.boards.mapper.BoardsDetail">
+	SELECT b.id, b.title, b.content, b.usersid, b.createdAt,
+		   u.username, u.password, u.email
+	FROM boards b inner join users u
+	on b.usersid = u.id
+	WHERE b.id =#{id}
+	</select>
+
 	<select id="findByIdList" resultType="site.metacoding.red.web.dto.request.boards.FindRespDto">
 		SELECT b.id, b.title, b.content, u.username, b.createdat
 		from boards b
@@ -17,11 +25,21 @@
 	</select>
 	
 	<select id="findById" resultType="site.metacoding.red.domain.boards.Boards">
-		SELECT * FROM boards WHERE id = #{id}
+		SELECT * FROM boards WHERE id = #{id} 
 	</select>
 	
-	<select id="findAll" resultType="site.metacoding.red.domain.boards.Boards">
-		SELECT * FROM boards ORDER BY id DESC
+	<select id="findByIdAsUserName" resultType="site.metacoding.red.web.dto.request.boards.FindRespDto">
+		SELECT b.id, b.title, b.content, u.username, b.createdat
+		from boards b
+		inner join users u on b.usersId = u.id 
+		where b.id =  #{id}
+	</select>
+	
+	<select id="findAll" resultType="site.metacoding.red.web.dto.request.boards.FindRespDto">
+		SELECT b.id, b.title, b.content, u.username, b.createdat
+		from boards b
+		inner join users u on b.usersId = u.id 
+		ORDER BY id DESC
 	</select>
 	
 	<delete id="delete">
